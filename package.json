@@ -1,0 +1,15 @@
+{
+  "name": "pi-packages",
+  "private": true,
+  "type": "module",
+  "description": "Monorepo for Pi coding-agent packages.",
+  "packageManager": "pnpm@11.10.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "check": "pnpm -r run check",
+    "test": "pnpm -r run test",
+    "typecheck": "pnpm -r run typecheck"
+  }
+}
