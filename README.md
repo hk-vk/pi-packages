@@ -1,20 +1,18 @@
 # Pi packages
 
-A scoped monorepo for Pi coding-agent extensions.
+A collection of Pi coding-agent extensions and packages, maintained in a pnpm monorepo.
 
-Repository: https://github.com/hk-vk/pi-packages
+Each package is independently versioned and published under the `@hk-vk` npm scope.
 
 ## Packages
 
-| Package | Description | Pi resource | Status |
-| --- | --- | --- | --- |
-| `@hk-vk/pi-package-search` | Browse, inspect, and install packages from the official Pi catalog. | `./index.ts` | Ready locally |
-| `@hk-vk/pi-skill-shortcut` | Codex-style `$skill-name` autocomplete and explicit skill invocation for Pi. | `./index.ts` | Ready locally |
-| `@hk-vk/pi-edit-footer` | Configure Pi footer and status-bar items in realtime. | `./index.ts` | Ready locally |
-| `@hk-vk/pi-skill-router` | Reduce Pi context usage by loading skills on demand instead of injecting the full catalog. | `./extensions` | Ready locally |
-| `@hk-vk/pi-sudo-auth` | Authenticate macOS sudo commands with a masked native Pi prompt. | `./extensions/sudo-auth.ts` | Ready locally |
-
-Every package has a `pi` manifest, the `pi-package` keyword, public scoped npm publishing metadata, a README, and a license.
+| Package | Description |
+| --- | --- |
+| `@hk-vk/pi-package-search` | Browse, inspect, and install packages from the official Pi catalog. |
+| `@hk-vk/pi-skill-shortcut` | Codex-style `$skill-name` autocomplete and explicit skill invocation for Pi. |
+| `@hk-vk/pi-edit-footer` | Configure Pi footer and status-bar items in realtime. |
+| `@hk-vk/pi-skill-router` | Reduce Pi context usage by loading skills on demand instead of injecting the full catalog. |
+| `@hk-vk/pi-sudo-auth` | Authenticate macOS sudo commands with a masked native Pi prompt. |
 
 ## Development
 
@@ -22,11 +20,17 @@ Every package has a `pi` manifest, the `pi-package` keyword, public scoped npm p
 pnpm install
 pnpm check
 pnpm test
-pnpm pack
+pnpm run pack
 ```
 
-`pnpm publish:dry` validates the recursive public publish without uploading anything. Publish only after logging into npm and reviewing the package tarballs:
+To verify the npm release without uploading packages:
 
 ```bash
-pnpm publish
+pnpm run publish:dry
+```
+
+After reviewing the package tarballs and logging in to npm:
+
+```bash
+pnpm run publish
 ```
