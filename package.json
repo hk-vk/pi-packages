@@ -8,8 +8,20 @@
     "node": ">=22"
   },
   "scripts": {
-    "check": "pnpm -r run check",
-    "test": "pnpm -r run test",
-    "typecheck": "pnpm -r run typecheck"
+    "check": "pnpm typecheck && node scripts/check-packages.mjs",
+    "test": "node scripts/test-packages.mjs",
+    "typecheck": "tsc --noEmit",
+    "pack": "pnpm --filter '@hk-vk/*' pack --pack-destination artifacts",
+    "publish:dry": "pnpm -r --filter './packages/*' publish --access public --dry-run --no-git-checks",
+    "publish": "pnpm -r --filter './packages/*' publish --access public --no-git-checks"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "0.84.2",
+    "@earendil-works/pi-tui": "0.84.2",
+    "@sinclair/typebox": "^0.34.49",
+    "@types/node": "^22.15.0",
+    "jiti": "^2.4.2",
+    "typebox": "^1.1.38",
+    "typescript": "^5.8.3"
   }
 }

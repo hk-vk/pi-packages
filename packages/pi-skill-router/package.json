@@ -1,0 +1,26 @@
+{
+  "name": "@hk-vk/pi-skill-router",
+  "version": "0.1.0",
+  "description": "Reduce Pi context usage by loading skills on demand instead of injecting the full catalog.",
+  "type": "module",
+  "license": "MIT",
+  "files": ["extensions", "README.md", "LICENSE"],
+  "keywords": ["pi-package", "pi-extension", "pi-coding-agent", "skills", "token-optimization"],
+  "pi": {
+    "extensions": ["./extensions"]
+  },
+  "dependencies": {
+    "typebox": "^1.1.38"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=0.84.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hk-vk/pi-packages.git",
+    "directory": "packages/pi-skill-router"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

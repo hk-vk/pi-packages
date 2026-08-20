@@ -1,0 +1,24 @@
+{
+  "name": "@hk-vk/pi-skill-shortcut",
+  "version": "0.1.0",
+  "description": "Codex-style $skill-name autocomplete and explicit skill invocation for Pi.",
+  "type": "module",
+  "license": "MIT",
+  "files": ["index.ts", "README.md", "LICENSE"],
+  "keywords": ["pi-package", "pi-extension", "pi-coding-agent", "skills", "skill-shortcut", "autocomplete"],
+  "pi": {
+    "extensions": ["./index.ts"]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=0.84.0",
+    "@earendil-works/pi-tui": ">=0.84.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hk-vk/pi-packages.git",
+    "directory": "packages/pi-skill-shortcut"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

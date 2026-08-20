@@ -1,0 +1,26 @@
+{
+  "name": "@hk-vk/pi-edit-footer",
+  "version": "0.1.0",
+  "description": "Configure Pi footer and status-bar items in realtime.",
+  "type": "module",
+  "license": "MIT",
+  "files": ["index.ts", "README.md", "LICENSE"],
+  "keywords": ["pi-package", "pi-extension", "pi-coding-agent", "footer", "status-bar", "tui"],
+  "pi": {
+    "extensions": ["./index.ts"]
+  },
+  "dependencies": {
+    "typebox": "^1.1.38"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=0.84.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hk-vk/pi-packages.git",
+    "directory": "packages/pi-edit-footer"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

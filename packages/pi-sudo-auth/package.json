@@ -1,0 +1,24 @@
+{
+  "name": "@hk-vk/pi-sudo-auth",
+  "version": "0.1.0",
+  "description": "Authenticate macOS sudo commands with a masked native Pi prompt.",
+  "type": "module",
+  "license": "MIT",
+  "files": ["extensions", "README.md", "LICENSE"],
+  "keywords": ["pi-package", "pi-extension", "pi-coding-agent", "sudo", "security", "macos"],
+  "pi": {
+    "extensions": ["./extensions/sudo-auth.ts"]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=0.84.0",
+    "@earendil-works/pi-tui": ">=0.84.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hk-vk/pi-packages.git",
+    "directory": "packages/pi-sudo-auth"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

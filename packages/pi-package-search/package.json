@@ -1,0 +1,27 @@
+{
+  "name": "@hk-vk/pi-package-search",
+  "version": "0.1.0",
+  "description": "Browse, inspect, and install packages from the official Pi catalog.",
+  "type": "module",
+  "license": "MIT",
+  "files": ["index.ts", "README.md", "LICENSE"],
+  "keywords": ["pi-package", "pi-extension", "pi-coding-agent", "package-search", "package-browser"],
+  "pi": {
+    "extensions": ["./index.ts"]
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.34.49"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=0.84.0",
+    "@earendil-works/pi-tui": ">=0.84.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hk-vk/pi-packages.git",
+    "directory": "packages/pi-package-search"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
