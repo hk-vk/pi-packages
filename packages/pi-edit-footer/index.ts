@@ -24,6 +24,7 @@ type SeenStatus = {
 type FooterConfig = {
     items: FooterItem[];
     hiddenIds: string[];
+    hiddenWidgetIds: string[];
     seen: SeenStatus[];
     textFilters: Record<string, string[]>;
     segmentLimits: Record<string, number>;
@@ -80,6 +81,7 @@ const DEFAULT_CONFIG: FooterConfig = {
         },
     ],
     hiddenIds: [],
+    hiddenWidgetIds: [],
     seen: defaultSeen(),
     textFilters: {},
     segmentLimits: {},
@@ -121,6 +123,7 @@ function normalizeConfig(raw: Partial<FooterConfig> | undefined): FooterConfig {
                 : DEFAULT_CONFIG.items,
         ),
         hiddenIds: [...new Set(Array.isArray(raw?.hiddenIds) ? raw.hiddenIds.filter((id) => typeof id === "string") : [])],
+        hiddenWidgetIds: [...new Set(Array.isArray(raw?.hiddenWidgetIds) ? raw.hiddenWidgetIds.filter((id) => typeof id === "string") : [])],
         textFilters: Object.fromEntries(
             rawTextFilters.map(([id, filters]) => [
                 id,
@@ -156,7 +159,7 @@ function normalizeConfig(raw: Partial<FooterConfig> | undefined): FooterConfig {
     };
 }
 
-type PersistedRules = Pick<FooterConfig, "items" | "hiddenIds" | "textFilters" | "segmentLimits">;
+type PersistedRules = Pick<FooterConfig, "items" | "hiddenIds" | "hiddenWidgetIds" | "textFilters" | "segmentLimits">;
 
 // Status updates are frequent. Keep the merged configuration in memory so
 // every footer repaint does not synchronously read and rewrite JSON files.
@@ -199,6 +202,7 @@ function writeConfig(config: FooterConfig): void {
     const rules: PersistedRules = {
         items: normalized.items,
         hiddenIds: normalized.hiddenIds,
+        hiddenWidgetIds: normalized.hiddenWidgetIds,
         textFilters: normalized.textFilters,
         segmentLimits: normalized.segmentLimits,
     };
@@ -308,7 +312,15 @@ function renderTrackedStatus(ctx: ExtensionContext, id: string, config = readCon
     }
 }
 
+function applyHiddenWidgets(ctx: ExtensionContext, config = readConfig()): void {
+    const ui = ctx.ui as typeof ctx.ui & { __editFooterOriginalSetWidget?: typeof ctx.ui.setWidget };
+    const original = ui.__editFooterOriginalSetWidget;
+    if (!original) return;
+    for (const id of config.hiddenWidgetIds) original(id, undefined);
+}
+
 function applyFooter(ctx: ExtensionContext, config = readConfig()): void {
+    applyHiddenWidgets(ctx, config);
     const ids = new Set([
         ...config.hiddenIds,
         ...config.items.map((item) => item.id),
@@ -322,19 +334,35 @@ function installStatusTracker(ctx: ExtensionContext): void {
     const ui = ctx.ui as typeof ctx.ui & {
         __editFooterPatched?: boolean;
         __editFooterOriginalSetStatus?: typeof ctx.ui.setStatus;
+        __editFooterWidgetPatched?: boolean;
+        __editFooterOriginalSetWidget?: typeof ctx.ui.setWidget;
     };
-    if (ui.__editFooterPatched) return;
+    if (!ui.__editFooterPatched) {
+        const original = ui.setStatus.bind(ctx.ui);
+        ui.__editFooterOriginalSetStatus = original as typeof ctx.ui.setStatus;
+        ui.__editFooterPatched = true;
 
-    const original = ui.setStatus.bind(ctx.ui);
-    ui.__editFooterOriginalSetStatus = original as typeof ctx.ui.setStatus;
-    ui.__editFooterPatched = true;
+        ui.setStatus = ((id: string, value: unknown) => {
+            rememberStatus(id, value, "seen");
+            const config = readConfig();
+            if (config.hiddenIds.includes(id)) return original(id, undefined as never);
+            return original(id, applyTextFilters(id, value, config) as never);
+        }) as typeof ctx.ui.setStatus;
+    }
+    if (ui.__editFooterWidgetPatched) return;
 
-    ui.setStatus = ((id: string, value: unknown) => {
-        rememberStatus(id, value, "seen");
-        const config = readConfig();
-        if (config.hiddenIds.includes(id)) return original(id, undefined as never);
-        return original(id, applyTextFilters(id, value, config) as never);
-    }) as typeof ctx.ui.setStatus;
+    type SetWidget = typeof ctx.ui.setWidget;
+    type SetWidgetArgs = Parameters<SetWidget>;
+    const original = ctx.ui.setWidget.bind(ctx.ui) as (...args: SetWidgetArgs) => ReturnType<SetWidget>;
+    ui.__editFooterOriginalSetWidget = original as SetWidget;
+    ui.__editFooterWidgetPatched = true;
+    ui.setWidget = ((...args: SetWidgetArgs) => {
+        const [id, widget, options] = args;
+        if (typeof id === "string" && readConfig().hiddenWidgetIds.includes(id)) {
+            return original(id, undefined, options);
+        }
+        return original(...args);
+    }) as SetWidget;
 }
 
 function setup(ctx: ExtensionContext): void {
@@ -359,8 +387,9 @@ function summarize(config = readConfig()): string {
     const filters = filtered.length ? `Word/phrase filters: ${filtered.map(([id, values]) => `${id}=[${values.join(", ")}]`).join("; ")}` : "Word/phrase filters: none";
     const clipped = Object.entries(config.segmentLimits);
     const clips = clipped.length ? `Segment clips: ${clipped.map(([id, count]) => `${id}=first ${count}`).join("; ")}` : "Segment clips: none";
+    const widgets = config.hiddenWidgetIds.length ? `Hidden widgets: ${config.hiddenWidgetIds.join(", ")}` : "Hidden widgets: none";
     const seen = config.seen.length ? `Seen/known entries: ${config.seen.map((item) => item.id).join(", ")}` : "Seen/known entries: none";
-    return `${custom}\n${hidden}\n${filters}\n${clips}\n${seen}`;
+    return `${custom}\n${hidden}\n${widgets}\n${filters}\n${clips}\n${seen}`;
 }
 
 function help(ctx: ExtensionCommandContext): void {
@@ -375,6 +404,8 @@ function help(ctx: ExtensionCommandContext): void {
             "/edit-footer off <id>",
             "/edit-footer hide <id>    hide one whole footer entry by id",
             "/edit-footer unhide <id>",
+            "/edit-footer hide-widget <id>    hide a Pi widget by id",
+            "/edit-footer unhide-widget <id>  allow a Pi widget again",
             "/edit-footer segments <id>         toggle · separated pieces inside an entry",
             "/edit-footer filter <id> <phrase>    hide one word/phrase inside an entry",
             "/edit-footer unfilter <id> <phrase>",
@@ -584,6 +615,7 @@ function clearConfig(config: FooterConfig): FooterConfig {
     return {
         items: [],
         hiddenIds: [...new Set([...config.hiddenIds, ...seenExternalIds])],
+        hiddenWidgetIds: [],
         seen: config.seen,
         textFilters: {},
         segmentLimits: {},
@@ -609,7 +641,12 @@ function mutateConfig(action: string, id: string | undefined, text: string | und
     const index = config.items.findIndex((item) => item.id === id);
     const existing = index >= 0 ? config.items[index] : undefined;
 
-    if (action === "set") {
+    if (action === "hide-widget" || action === "unhide-widget") {
+        const hidden = new Set(config.hiddenWidgetIds);
+        if (action === "hide-widget") hidden.add(id);
+        else hidden.delete(id);
+        config.hiddenWidgetIds = [...hidden];
+    } else if (action === "set") {
         if (!text) throw new Error("text is required");
         const item: FooterItem = { ...(existing ?? { id, color: "default" as FooterColor }), id, text, enabled: true };
         if (index >= 0) config.items[index] = item;
@@ -689,10 +726,10 @@ export default function editFooter(pi: ExtensionAPI) {
     pi.registerTool({
         name: "edit_footer",
         label: "Edit Footer",
-        description: "Configure Pi footer/status-bar items in realtime. Supports persistent hiding, text filters, and clipping an entry to its first N separator-delimited parts.",
+        description: "Configure Pi footer/status-bar items and Pi widgets in realtime. Supports persistent hiding, text filters, and clipping an entry to its first N separator-delimited parts.",
         parameters: Type.Object({
-            action: Type.Union(["list", "set", "on", "off", "remove", "hide", "unhide", "filter", "unfilter", "clip", "unclip", "clear"].map((value) => Type.Literal(value))),
-            id: Type.Optional(Type.String({ description: "Footer/status id" })),
+            action: Type.Union(["list", "set", "on", "off", "remove", "hide", "unhide", "hide-widget", "unhide-widget", "filter", "unfilter", "clip", "unclip", "clear"].map((value) => Type.Literal(value))),
+            id: Type.Optional(Type.String({ description: "Footer/status/widget id" })),
             text: Type.Optional(Type.String({ description: "Text, phrase, or segment count depending on action" })),
         }),
         async execute(_toolCallId, params, _signal, _onUpdate, ctx) {

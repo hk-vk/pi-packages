@@ -8,4 +8,4 @@ Configure Pi footer and status-bar items in realtime.
 pi install npm:@hk-vk/pi-edit-footer
 ```
 
-Use `/edit-footer` or the `edit_footer` tool to list, hide, show, filter, clip, and configure footer items.
+Use `/edit-footer` or the `edit_footer` tool to list, hide, show, filter, clip, and configure footer items and Pi widgets.
