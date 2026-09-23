@@ -19,7 +19,7 @@ Forked from [Diego Petrucci's pi-extensions](https://github.com/diegopetrucci/pi
 ## Install
 
 ```bash
-pi install /path/to/pi-packages/packages/pi-openai-fast
+pi install npm:@hk-vk/pi-openai-fast
 ```
 
 Run `/reload`, then `/fast` to enable it for the session. Fast mode is off by default.
