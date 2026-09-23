@@ -8,7 +8,7 @@ Forked from [Diego Petrucci's pi-extensions](https://github.com/diegopetrucci/pi
 
 - Toggle Fast mode for the current session with `/fast`.
 - Show `fast` in the footer when the selected model is eligible and Fast mode is on.
-- Check eligibility by provider and API, without a model-ID allowlist.
+- Applies to eligible models by provider and API, without a hardcoded model-ID list.
 - Set the default and status indicator globally or per trusted project.
 
 ## Supported APIs
