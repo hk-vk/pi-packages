@@ -2,7 +2,7 @@
 
 Enable Fast mode for models using Pi's `openai` and `openai-codex` providers.
 
-Forked from the `openai-fast` extension in [hk-vk/pi-extensions](https://github.com/hk-vk/pi-extensions), itself forked from [Diego Petrucci's pi-extensions](https://github.com/diegopetrucci/pi-extensions).
+Forked from [Diego Petrucci's pi-extensions](https://github.com/diegopetrucci/pi-extensions).
 
 ## Features
 
