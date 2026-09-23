@@ -39,6 +39,12 @@ importers:
         specifier: ^1.1.38
         version: 1.3.16
 
+  packages/pi-openai-fast:
+    dependencies:
+      '@earendil-works/pi-coding-agent':
+        specifier: '>=0.84.0'
+        version: 0.84.2(ws@8.21.3)
+
   packages/pi-package-search:
     dependencies:
       '@earendil-works/pi-coding-agent':

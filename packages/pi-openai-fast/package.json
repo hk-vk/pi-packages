@@ -1,0 +1,26 @@
+{
+  "name": "@hk-vk/pi-openai-fast",
+  "version": "0.1.0",
+  "description": "Enable Fast mode for Pi's OpenAI providers.",
+  "type": "module",
+  "license": "MIT",
+  "files": ["index.ts", "openai-fast.example.json", "README.md", "LICENSE"],
+  "keywords": ["pi-package", "pi-extension", "pi-coding-agent", "openai", "codex", "fast"],
+  "pi": {
+    "extensions": ["./index.ts"]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=0.84.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hk-vk/pi-packages.git",
+    "directory": "packages/pi-openai-fast"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
