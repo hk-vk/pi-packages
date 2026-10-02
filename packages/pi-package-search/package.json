@@ -9,12 +9,10 @@
   "pi": {
     "extensions": ["./index.ts"]
   },
-  "dependencies": {
-    "@sinclair/typebox": "^0.34.49"
-  },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": ">=0.84.0",
-    "@earendil-works/pi-tui": ">=0.84.0"
+    "@earendil-works/pi-tui": ">=0.84.0",
+    "@sinclair/typebox": "*"
   },
   "repository": {
     "type": "git",

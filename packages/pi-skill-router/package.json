@@ -9,11 +9,9 @@
   "pi": {
     "extensions": ["./extensions"]
   },
-  "dependencies": {
-    "typebox": "^1.1.38"
-  },
   "peerDependencies": {
-    "@earendil-works/pi-coding-agent": ">=0.84.0"
+    "@earendil-works/pi-coding-agent": ">=0.84.0",
+    "typebox": "*"
   },
   "repository": {
     "type": "git",
