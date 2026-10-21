@@ -1,6 +1,6 @@
 {
   "name": "@hk-vk/pi-openai-fast",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Enable Fast mode for Pi's OpenAI providers.",
   "type": "module",
   "license": "MIT",

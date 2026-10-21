@@ -1,6 +1,6 @@
 {
   "name": "@hk-vk/pi-edit-footer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Configure Pi footer and status-bar items in realtime.",
   "type": "module",
   "license": "MIT",

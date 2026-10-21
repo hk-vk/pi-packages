@@ -6,7 +6,11 @@ super.engineering is a native macOS workspace for agentic engineering: it groups
 
 ## Install
 
-This package is being prepared for publication; it has not been released from this monorepo yet. For local development:
+```sh
+pi install npm:@hk-vk/pi-super-engineering-themes
+```
+
+For local development:
 
 ```sh
 pi install /Users/harikrishnan/coding/personal/pi-packages/packages/pi-super-engineering-themes

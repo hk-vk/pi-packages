@@ -10,6 +10,7 @@ import {
   statSync,
   writeFileSync,
 } from "node:fs";
+import { readdir, readFile, stat } from "node:fs/promises";
 import { dirname, join, relative } from "node:path";
 
 // pi-skill-router
@@ -53,7 +54,7 @@ const ROOTS = [
 const BACKUP_ROOT = `${HOME}/.pi/agent/skill-router-backups`;
 
 let skillsCache: SkillLike[] = [];
-let lastScan = 0;
+let skillsLoading: Promise<SkillLike[]> | undefined;
 
 function normalize(value: unknown): string {
   return String(value ?? "").toLowerCase();
@@ -104,15 +105,29 @@ function parseFrontmatter(text: string): { front: string; body: string; data: Re
   return { front, body, data };
 }
 
-function scanSkills(force = false): SkillLike[] {
-  const now = Date.now();
-  if (!force && skillsCache.length > 0 && now - lastScan < 30_000) return skillsCache;
+async function walkSkillFilesAsync(root: string, out: string[]) {
+  let entries: string[];
+  try { entries = await readdir(root); } catch { return; }
+  for (const entry of entries) {
+    if (entry === ".git" || entry === "node_modules" || entry.includes("backup")) continue;
+    const path = join(root, entry);
+    try {
+      if (!(await stat(path)).isDirectory()) continue;
+      const skill = join(path, "SKILL.md");
+      try { if ((await stat(skill)).isFile()) out.push(skill); } catch { /* no skill */ }
+      await walkSkillFilesAsync(path, out);
+    } catch { /* unreadable directory */ }
+  }
+}
 
+async function scanSkills(): Promise<SkillLike[]> {
+  const files: string[] = [];
+  for (const root of ROOTS) await walkSkillFilesAsync(root, files);
   const seenNames = new Set<string>();
   const skills: SkillLike[] = [];
-  for (const filePath of discoverSkillFiles()) {
+  for (const filePath of Array.from(new Set(files)).sort()) {
     try {
-      const text = readFileSync(filePath, "utf8");
+      const text = await readFile(filePath, "utf8");
       const parsed = parseFrontmatter(text);
       const name = parsed?.data.name;
       const description = parsed?.data.description;
@@ -130,8 +145,11 @@ function scanSkills(force = false): SkillLike[] {
     }
   }
   skillsCache = skills;
-  lastScan = now;
   return skillsCache;
+}
+
+function loadSkills(): Promise<SkillLike[]> {
+  return skillsLoading ??= scanSkills().catch(() => skillsCache);
 }
 
 function scoreSkill(skill: SkillLike, query: string): number {
@@ -192,7 +210,6 @@ function hideCatalog(): PatchResult {
   }
   mkdirSync(backupDir, { recursive: true });
   writeFileSync(join(backupDir, "manifest.json"), JSON.stringify(result, null, 2) + "\n", "utf8");
-  scanSkills(true);
   return result;
 }
 
@@ -240,7 +257,6 @@ function restoreLatestBackup(): PatchResult {
   }
 
   try { renameSync(backupDir, `${backupDir}.restored`); } catch { /* best effort */ }
-  scanSkills(true);
   return result;
 }
 
@@ -258,7 +274,7 @@ Users can still invoke skills manually with /skill:name.
 }
 
 function statusText(): string {
-  const skills = scanSkills(true);
+  const skills = skillsCache;
   const hidden = skills.filter((s) => s.hidden).length;
   return [
     `pi-skill-router status`,
@@ -270,11 +286,13 @@ function statusText(): string {
 }
 
 export default function skillRouter(pi: ExtensionAPI) {
-  scanSkills(true);
+  skillsCache = [];
+  skillsLoading = undefined;
 
   pi.registerCommand("skill-router-status", {
     description: "Show pi-skill-router skill catalog status",
     handler: async (_args, ctx) => {
+      await loadSkills();
       ctx.ui.notify(statusText(), "info");
     },
   });
@@ -306,7 +324,7 @@ export default function skillRouter(pi: ExtensionAPI) {
     async execute(_id, params) {
       const query = String((params as any).query ?? "");
       const limit = Math.max(1, Math.min(20, Number((params as any).limit ?? 8)));
-      const matches = scanSkills()
+      const matches = (await loadSkills())
         .map((skill) => ({ skill, score: scoreSkill(skill, query) }))
         .filter(({ score }) => score > 0)
         .sort((a, b) => b.score - a.score || a.skill.name.localeCompare(b.skill.name))
@@ -323,20 +341,19 @@ export default function skillRouter(pi: ExtensionAPI) {
     parameters: Type.Object({ name: Type.String({ description: "Exact skill name" }) }),
     async execute(_id, params) {
       const name = String((params as any).name ?? "");
-      const skill = scanSkills().find((s) => s.name === name);
+      const skill = (await loadSkills()).find((s) => s.name === name);
       if (!skill) return { content: [{ type: "text", text: `Skill not found: ${name}` }], details: { found: false, name, path: undefined as string | undefined } };
-      const text = readFileSync(skill.filePath, "utf8");
+      const text = await readFile(skill.filePath, "utf8");
       return { content: [{ type: "text", text: `# Skill: ${name}\nPath: ${skill.filePath}\n\n${text}` }], details: { found: true, name, path: skill.filePath } };
     },
   });
 
-  pi.on("session_start", async () => {
-    scanSkills(true);
+  pi.on("session_start", () => {
+    void loadSkills();
   });
 
   pi.on("before_agent_start", async (event) => {
     try {
-      scanSkills();
       return { systemPrompt: compactSkillPrompt(event.systemPrompt) };
     } catch {
       return {}; // fail open

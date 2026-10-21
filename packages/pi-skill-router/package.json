@@ -1,6 +1,6 @@
 {
   "name": "@hk-vk/pi-skill-router",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Reduce Pi context usage by loading skills on demand instead of injecting the full catalog.",
   "type": "module",
   "license": "MIT",
