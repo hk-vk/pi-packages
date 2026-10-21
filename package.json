@@ -9,7 +9,7 @@
   },
   "scripts": {
     "check": "pnpm typecheck && node scripts/check-packages.mjs",
-    "test": "node scripts/test-packages.mjs",
+    "test": "node scripts/test-packages.mjs && node --test packages/pi-super-engineering-themes/test/*.test.mjs",
     "typecheck": "tsc --noEmit",
     "pack": "pnpm --filter '@hk-vk/*' pack --pack-destination artifacts",
     "publish:dry": "pnpm -r --filter './packages/*' publish --access public --dry-run --no-git-checks",

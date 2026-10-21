@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@types/node>undici-types': 6.23.0
+
 importers:
 
   .:
@@ -54,7 +57,7 @@ importers:
         specifier: '>=0.84.0'
         version: 0.84.2
       '@sinclair/typebox':
-        specifier: ^0.34.49
+        specifier: '*'
         version: 0.34.52
 
   packages/pi-skill-router:
@@ -63,7 +66,7 @@ importers:
         specifier: '>=0.84.0'
         version: 0.84.2(ws@8.21.3)
       typebox:
-        specifier: ^1.1.38
+        specifier: '*'
         version: 1.3.16
 
   packages/pi-skill-shortcut:
@@ -83,6 +86,12 @@ importers:
       '@earendil-works/pi-tui':
         specifier: '>=0.84.0'
         version: 0.84.2
+
+  packages/pi-super-engineering-themes:
+    dependencies:
+      '@earendil-works/pi-coding-agent':
+        specifier: '*'
+        version: 0.84.2(ws@8.21.3)
 
 packages:
 
@@ -628,8 +637,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  undici-types@6.21.0:
-    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+  undici-types@6.23.0:
+    resolution: {integrity: sha512-HN7GeXgBUs1StmY/vf9hIH11LrNI5SfqmFVtxKyp9Dhuf1P1cDSRlS+H1NJDaGOWzlI08q+NmiHgu11Vx6QnhA==}
 
   undici@8.9.0:
     resolution: {integrity: sha512-aWZpUj7XoGonMClx4gdDRfgBjqeA+F473aDmROQQbM9n6PRfK/u1q/a0X4wMTgcHfT8H6fpbt98PFuDUwFg2YA==}
@@ -1104,7 +1113,7 @@ snapshots:
 
   '@types/node@22.20.1':
     dependencies:
-      undici-types: 6.21.0
+      undici-types: 6.23.0
 
   '@types/retry@0.12.0': {}
 
@@ -1328,7 +1337,7 @@ snapshots:
 
   typescript@5.9.3: {}
 
-  undici-types@6.21.0: {}
+  undici-types@6.23.0: {}
 
   undici@8.9.0: {}
 

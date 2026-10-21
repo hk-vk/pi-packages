@@ -15,6 +15,8 @@ Each package is independently versioned and published under the `@hk-vk` npm sco
 | `@hk-vk/pi-skill-router` | Reduce Pi context usage by loading skills on demand instead of injecting the full catalog. | `pi install npm:@hk-vk/pi-skill-router` | [![npm downloads](https://img.shields.io/npm/dm/%40hk-vk%2Fpi-skill-router?logo=npm&label=downloads)](https://www.npmjs.com/package/@hk-vk/pi-skill-router) |
 | `@hk-vk/pi-sudo-auth` | Authenticate macOS sudo commands with a masked native Pi prompt. | `pi install npm:@hk-vk/pi-sudo-auth` | [![npm downloads](https://img.shields.io/npm/dm/%40hk-vk%2Fpi-sudo-auth?logo=npm&label=downloads)](https://www.npmjs.com/package/@hk-vk/pi-sudo-auth) |
 
+The unreleased `@hk-vk/pi-super-engineering-themes` package in `packages/pi-super-engineering-themes` syncs Pi light/dark themes with the owning super.engineering workspace. Install it locally with `pi install ./packages/pi-super-engineering-themes`; npm publication is pending.
+
 ## Development
 
 ```bash

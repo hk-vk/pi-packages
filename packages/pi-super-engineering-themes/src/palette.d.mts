@@ -1,0 +1,10 @@
+import type { Theme } from '@earendil-works/pi-coding-agent';
+import type { WorkspaceTheme } from './sc.mjs';
+export function themeMatches(active: Theme, expected: Theme | undefined, tokens: string[]): boolean;
+export const backgroundTokens: string[];
+export function rgb(hex: string): number[];
+export function hex(values: number[]): string;
+export function mix(a: string, b: string, t: number): string;
+export function contrast(a: string, b: string): number;
+export function readable(color: string, backgrounds: string[], dark: boolean, minimum?: number): string;
+export function buildPalette(mode: 'light' | 'dark', theme?: WorkspaceTheme, tokens?: string[]): { colors: Record<string, string>; page: string };

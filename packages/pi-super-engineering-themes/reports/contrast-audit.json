@@ -1,0 +1,181 @@
+{
+  "scope": "Computed sRGB contrast on declared theme panels, not screen measurements. null means terminal-default/indexed/missing color; actual contrast unknown.",
+  "rows": [
+    {
+      "name": "light",
+      "appearance": "light",
+      "prompt": 8.5,
+      "toolText": 3.95,
+      "path": 4.33,
+      "comment": 3.95
+    },
+    {
+      "name": "dark",
+      "appearance": "dark",
+      "prompt": 8.88,
+      "toolText": 4.46,
+      "path": 4.32,
+      "comment": 4.46
+    },
+    {
+      "name": "catppuccin-latte",
+      "appearance": "light",
+      "prompt": 7.06,
+      "toolText": 6.57,
+      "path": 4.04,
+      "comment": 3.25
+    },
+    {
+      "name": "catppuccin-mocha",
+      "appearance": "dark",
+      "prompt": 11.34,
+      "toolText": 8.69,
+      "path": 5.97,
+      "comment": 4.45
+    },
+    {
+      "name": "crimson-noir",
+      "appearance": "dark",
+      "prompt": 14.94,
+      "toolText": 13.24,
+      "path": 5.44,
+      "comment": 2.41
+    },
+    {
+      "name": "dracula",
+      "appearance": "dark",
+      "prompt": 13.36,
+      "toolText": 11.06,
+      "path": 4.89,
+      "comment": 2.51
+    },
+    {
+      "name": "everforest-dark",
+      "appearance": "dark",
+      "prompt": 7.38,
+      "toolText": 5.03,
+      "path": 3.91,
+      "comment": 2.62
+    },
+    {
+      "name": "gruvbox-dark",
+      "appearance": "dark",
+      "prompt": 10.75,
+      "toolText": 8.45,
+      "path": 4.31,
+      "comment": 3.16
+    },
+    {
+      "name": "gruvbox-light",
+      "appearance": "light",
+      "prompt": 10.22,
+      "toolText": 8.45,
+      "path": 4.81,
+      "comment": 2.68
+    },
+    {
+      "name": "matrix",
+      "appearance": "dark",
+      "prompt": 17.12,
+      "toolText": 13.72,
+      "path": 11,
+      "comment": 2.93
+    },
+    {
+      "name": "nord",
+      "appearance": "dark",
+      "prompt": 10.84,
+      "toolText": 8.73,
+      "path": 5.03,
+      "comment": 1.36
+    },
+    {
+      "name": "one-dark",
+      "appearance": "dark",
+      "prompt": 6.57,
+      "toolText": 4.58,
+      "path": 4.13,
+      "comment": 1.62
+    },
+    {
+      "name": "rose-pine-dawn",
+      "appearance": "light",
+      "prompt": 8.69,
+      "toolText": 7.92,
+      "path": 3.16,
+      "comment": 2.48
+    },
+    {
+      "name": "rose-pine",
+      "appearance": "dark",
+      "prompt": 13.39,
+      "toolText": 11.51,
+      "path": 7.25,
+      "comment": 2.94
+    },
+    {
+      "name": "solarized-dark",
+      "appearance": "dark",
+      "prompt": 4.86,
+      "toolText": 4.86,
+      "path": 3.53,
+      "comment": 2.42
+    },
+    {
+      "name": "solarized-light",
+      "appearance": "light",
+      "prompt": 12.05,
+      "toolText": 10.61,
+      "path": 3,
+      "comment": 2.18
+    },
+    {
+      "name": "tokyo-night-storm",
+      "appearance": "dark",
+      "prompt": 9.02,
+      "toolText": 8.32,
+      "path": 5.33,
+      "comment": 2.17
+    },
+    {
+      "name": "tokyo-night",
+      "appearance": "dark",
+      "prompt": 10.59,
+      "toolText": 8.32,
+      "path": 5.33,
+      "comment": 2.17
+    },
+    {
+      "name": "mono-black",
+      "appearance": "dark",
+      "prompt": 13.62,
+      "toolText": 6.95,
+      "path": 11.58,
+      "comment": 5.68
+    },
+    {
+      "name": "obsidian-focus",
+      "appearance": "dark",
+      "prompt": 14.21,
+      "toolText": 10.62,
+      "path": 7.28,
+      "comment": 4.34
+    },
+    {
+      "name": "super-workspace-dark",
+      "appearance": "dark",
+      "prompt": 8.53,
+      "toolText": 11,
+      "path": 9.07,
+      "comment": 9.08
+    },
+    {
+      "name": "super-workspace-light",
+      "appearance": "light",
+      "prompt": 12.59,
+      "toolText": 14.53,
+      "path": 8.14,
+      "comment": 8.14
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@hk-vk/pi-super-engineering-themes",
+  "version": "0.2.0",
+  "type": "module",
+  "description": "Readable Pi light/dark themes synced to each super.engineering terminal's owning workspace",
+  "license": "MIT",
+  "files": ["extensions", "src", "docs", "README.md", "LICENSE"],
+  "keywords": ["pi-package", "pi-extension", "theme", "super.engineering", "superconductor"],
+  "scripts": { "test": "node --test" },
+  "pi": { "extensions": ["./extensions/super-theme.ts"] },
+  "peerDependencies": { "@earendil-works/pi-coding-agent": "*" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hk-vk/pi-packages.git",
+    "directory": "packages/pi-super-engineering-themes"
+  },
+  "publishConfig": { "access": "public" }
+}

@@ -1,6 +1,11 @@
 packages:
   - "packages/*"
 
+# Node 22 types request 6.21.x, whose publication lost provenance.
+# Use the compatible 6.x release with restored provenance; keep trust checks enabled.
+overrides:
+  "@types/node>undici-types": "6.23.0"
+
 allowBuilds:
   "@google/genai": true
   protobufjs: true
